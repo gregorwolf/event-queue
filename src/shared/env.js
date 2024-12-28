@@ -22,8 +22,14 @@ class Env {
   }
 
   get redisCredentialsFromEnv() {
-    const services = xsenv.getServices({
+    let services = xsenv.getServices({
       cache: { name: "redis-cache" },
+    })
+    if (services?.cache?.credentials) {
+      return services.cache.credentials;
+    }
+    services = xsenv.getServices({
+      cache: { label: "redis-cache" },
     })
     return services?.cache?.credentials;
     // return this.#vcapServices["redis-cache"]?.[0]?.credentials;
