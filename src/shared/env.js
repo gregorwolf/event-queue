@@ -1,5 +1,8 @@
 "use strict";
 
+const xsenv = require("@sap/xsenv");
+xsenv.loadEnv();
+
 let instance;
 
 class Env {
@@ -19,7 +22,11 @@ class Env {
   }
 
   get redisCredentialsFromEnv() {
-    return this.#vcapServices["redis-cache"]?.[0]?.credentials;
+    const services = xsenv.getServices({
+      cache: { name: "redis-cache" },
+    })
+    return services?.cache?.credentials;
+    // return this.#vcapServices["redis-cache"]?.[0]?.credentials;
   }
 
   get applicationName() {
